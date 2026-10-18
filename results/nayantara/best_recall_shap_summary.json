@@ -7,43 +7,43 @@
   "top_features": [
     {
       "feature": "numerical__PageValues",
-      "mean_abs_shap": 0.14878122045859088
+      "mean_abs_shap": 0.14901311169633596
     },
     {
       "feature": "numerical__ProductRelated",
-      "mean_abs_shap": 0.019732506562059306
+      "mean_abs_shap": 0.019561464554686027
     },
     {
       "feature": "categorical__Month_Nov",
-      "mean_abs_shap": 0.01767449124418676
+      "mean_abs_shap": 0.01793663054977819
     },
     {
       "feature": "numerical__ExitRates",
-      "mean_abs_shap": 0.016613091449643742
+      "mean_abs_shap": 0.016826145811892318
     },
     {
       "feature": "categorical__TrafficType_3",
-      "mean_abs_shap": 0.00887246127698358
+      "mean_abs_shap": 0.00835931960911606
     },
     {
       "feature": "categorical__Month_May",
-      "mean_abs_shap": 0.005396641885621622
+      "mean_abs_shap": 0.005611945459544252
     },
     {
       "feature": "categorical__OperatingSystems_3",
-      "mean_abs_shap": 0.004175168937416819
+      "mean_abs_shap": 0.004243825848100288
     },
     {
       "feature": "categorical__Month_Dec",
-      "mean_abs_shap": 0.0038385794408666977
+      "mean_abs_shap": 0.00388340947538275
     },
     {
       "feature": "categorical__Month_Oct",
-      "mean_abs_shap": 0.003566581367349983
+      "mean_abs_shap": 0.0036946229113880556
     },
     {
       "feature": "categorical__Browser_3",
-      "mean_abs_shap": 0.0033022200673250394
+      "mean_abs_shap": 0.0035319851373428793
     }
   ]
 }

@@ -90,18 +90,31 @@ def get_model_and_data(row):
 def positive_class_shap_values(shap_values):
     """Return SHAP values for the purchase class (True / class 1)."""
     if isinstance(shap_values, list):
-        return np.asarray(shap_values[1], dtype=float)
-    arr = np.asarray(shap_values, dtype=float)
+        arr = np.asarray(shap_values[1], dtype=float)
+    elif hasattr(shap_values, "values"):
+        arr = np.asarray(shap_values.values, dtype=float)
+    else:
+        arr = np.asarray(shap_values, dtype=float)
+
     if arr.ndim == 3:
-        return arr[:, :, 1]
+        if arr.shape[-1] == 2:
+            return arr[:, :, 1]
+        return arr[:, :, 0]
     if arr.ndim == 2:
         return arr
+    if arr.ndim == 1:
+        return arr.reshape(1, -1)
     raise ValueError(f"Unsupported SHAP structure for purchase-class explanation: {arr.shape}")
 
 
 def make_feature_ranking(values, feature_names):
     """Create a ranked feature table from absolute SHAP values."""
-    mean_abs = np.abs(values).mean(axis=0)
+    arr = np.asarray(values, dtype=float)
+    if arr.ndim == 1:
+        arr = arr.reshape(1, -1)
+    if arr.ndim == 3 and arr.shape[-1] == 2:
+        arr = arr[:, :, 1]
+    mean_abs = np.abs(arr).mean(axis=0)
     return pd.DataFrame({
         "feature": feature_names,
         "mean_abs_shap": mean_abs,
@@ -123,8 +136,18 @@ def save_global_plot(values, feature_names, path, title):
 
 def save_local_plot(values, feature_names, path, title):
     """Save a local explanation for the most influential sample."""
-    sample_idx = int(np.argmax(np.abs(values).sum(axis=1)))
-    local_values = values[sample_idx]
+    arr = np.asarray(values, dtype=float)
+    if arr.ndim == 1:
+        arr = arr.reshape(1, -1)
+    if arr.ndim == 3 and arr.shape[-1] == 2:
+        arr = arr[:, :, 1]
+    if arr.ndim != 2:
+        raise ValueError(f"Expected a 2D SHAP value matrix for local plotting, got {arr.shape}.")
+    if arr.shape[0] == 0:
+        raise ValueError("No SHAP values were generated for the selected sample.")
+
+    sample_idx = int(np.argmax(np.abs(arr).sum(axis=1)))
+    local_values = arr[sample_idx]
     ranking = pd.DataFrame({
         "feature": feature_names,
         "shap_value": local_values,
